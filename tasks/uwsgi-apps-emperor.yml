@@ -1,0 +1,35 @@
+---
+
+- name: create uwsgi emperor application server directory
+  file: path={{ giscube_apps_server_uwsgi_directory }}/apps-emperor state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: copy uwsgi emperor application server to uwsgi directory
+  template:
+        backup=yes
+        src=data/uwsgi/apps-emperor/{{ item }}.j2
+        dest={{ giscube_apps_server_uwsgi_directory }}/apps-emperor/{{ item }}
+        owner=root
+        group=root
+        mode=0644
+  with_items:
+      - envvars
+      - uwsgi.ini
+
+- name: copy uwsgi emperor application server to uwsgi directory
+  template:
+        backup=yes
+        src=data/uwsgi/apps-emperor/{{ item }}.j2
+        dest={{ giscube_apps_server_uwsgi_directory }}/apps-emperor/{{ item }}
+        owner=root
+        group=root
+        mode=0755
+  with_items:
+      - uwsgi.sh
+
+- name: install uwsgi for apps-emperor
+  pip:
+    virtualenv={{ giscube_apps_server_uwsgi_directory }}/apps-emperor/venv/
+    name=uwsgi version=2.0.12

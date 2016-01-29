@@ -1,0 +1,26 @@
+
+    rewrite ^/apps/([^/]+)$ $scheme://$http_host/apps/$1/ redirect ;
+
+    ### Apps
+    # Static files
+    location ~ ^/(?<group>apps)/(?<appname>[^/]+)/static/(?<resource>.*)$ {
+            alias {{ giscube_apps_server_apps_directory }}/$appname/static/$resource;
+    }
+
+    location ~ ^/(?<group>apps)/(?<appname>[^/]+)/(.*) {
+            include uwsgi_params;
+            uwsgi_modifier1 30;
+            uwsgi_pass unix:{{ giscube_apps_server_apps_directory }}/$appname/uwsgi.sock;
+            uwsgi_param SCRIPT_NAME /$group/$appname;
+    }
+
+    ### FCGIs
+    location ~ ^/(?<group>fcgis)/(?<appname>[^/]+)/(.*) {
+            # Only available for local connections
+            allow 127.0.0.1;
+
+            include uwsgi_params;
+            uwsgi_modifier1 9;
+            uwsgi_pass unix:{{ giscube_apps_server_fcgis_directory }}/$appname/uwsgi.sock;
+            uwsgi_param SCRIPT_NAME /$group/$appname;
+    }

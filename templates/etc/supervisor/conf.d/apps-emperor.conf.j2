@@ -1,0 +1,11 @@
+[program:apps-emperor]
+autostart=true
+autorestart=true
+startretries=99999999
+stopsignal=INT
+redirect_stderr=true
+stdout_logfile={{ giscube_apps_server_uwsgi_directory }}/%(program_name)s/log.log
+stdout_logfile_maxbytes=5MB
+stdout_logfile_backups=1
+
+command = {{ giscube_apps_server_uwsgi_directory }}/%(program_name)s/uwsgi.sh

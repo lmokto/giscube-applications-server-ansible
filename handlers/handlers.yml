@@ -1,0 +1,19 @@
+---
+
+- name: reread supervisor
+  shell: /usr/bin/supervisorctl reread && /usr/bin/supervisorctl update
+
+- name: restart supervisor
+  service: name=supervisor state=restarted
+
+- name: reload nginx
+  service: name=nginx state=reloaded
+
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: reload monit
+  service: name=monit state=reloaded
+
+- name: restart monit
+  service: name=monit state=restarted

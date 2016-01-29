@@ -1,0 +1,69 @@
+---
+
+- name: create apps directory
+  file: path={{ giscube_apps_server_apps_directory }} state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: copy example applications to apps directory
+  copy:
+    src=data/apps/
+    dest={{ giscube_apps_server_apps_directory }}
+    owner=www-data
+    group=www-data
+    mode=0644
+  when: giscube_apps_server_install_examples
+
+- name: create fastcgis directory
+  file: path={{ giscube_apps_server_fcgis_directory }} state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: create uwsgi directory
+  file: path={{ giscube_apps_server_uwsgi_directory }} state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: uwsgi common environment variables file
+  template:
+        backup=yes
+        src=data/uwsgi/envvars.j2
+        dest=/data/uwsgi/envvars
+        owner=www-data
+        group=www-data
+        mode=0640
+
+- include: uwsgi-apps-emperor.yml
+
+- include: uwsgi-apps-ondemand.yml
+
+- include: uwsgi-fcgis-ondemand.yml
+
+- name: applications server nginx configuration
+  template:
+        backup=yes
+        src=etc/nginx/sites-available/default.conf/applications-server.conf.j2
+        dest=/etc/nginx/sites-available/default.conf/applications-server.conf
+        owner=root
+        group=root
+        mode=0644
+  notify:
+    - reload nginx
+
+- name: applications server supervisor configuration
+  template:
+        backup=yes
+        src=etc/supervisor/conf.d/{{ item }}.j2
+        dest=/etc/supervisor/conf.d/{{ item }}
+        owner=root
+        group=root
+        mode=0644
+  with_items:
+    - apps-emperor.conf
+    - apps-ondemand.conf
+    - fcgis-ondemand.conf
+  notify:
+    - reread supervisor

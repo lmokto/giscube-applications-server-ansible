@@ -1,0 +1,36 @@
+---
+
+- name: create uwsgi ondemand application server directory
+  file: path={{ giscube_apps_server_uwsgi_directory }}/apps-ondemand state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: copy uwsgi ondemand application server to uwsgi directory
+  template:
+        backup=yes
+        src=data/uwsgi/apps-ondemand/{{ item }}.j2
+        dest={{ giscube_apps_server_uwsgi_directory }}/apps-ondemand/{{ item }}
+        owner=root
+        group=root
+        mode=0644
+  with_items:
+      - envvars
+      - uwsgi.ini
+
+- name: copy uwsgi ondemand application server to uwsgi directory
+  template:
+        backup=yes
+        src=data/uwsgi/apps-ondemand/{{ item }}.j2
+        dest={{ giscube_apps_server_uwsgi_directory }}/apps-ondemand/{{ item }}
+        owner=root
+        group=root
+        mode=0755
+  with_items:
+      - uwsgi_socket_name.sh
+      - uwsgi.sh
+
+- name: install uwsgi for apps-ondemand
+  pip:
+    virtualenv={{ giscube_apps_server_uwsgi_directory }}/apps-ondemand/venv/
+    name=uwsgi version=2.0.12

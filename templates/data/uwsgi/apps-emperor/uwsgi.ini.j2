@@ -1,0 +1,7 @@
+[uwsgi]
+procname-prefix-spaced=/apps/* emperor
+
+emperor = {{ giscube_apps_server_apps_directory }}/*/uwsgi.ini
+master = true
+die-on-term = true
+vacuum = true

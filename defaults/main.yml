@@ -1,0 +1,7 @@
+---
+
+giscube_apps_server_apps_directory: /data/apps
+giscube_apps_server_fcgis_directory: /data/fcgis
+giscube_apps_server_uwsgi_directory: /data/uwsgi
+
+giscube_apps_server_install_examples: yes

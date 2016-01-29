@@ -1,0 +1,30 @@
+# A relatively simple WSGI application.
+
+from wsgiref.util import setup_testing_defaults
+from datetime import datetime
+import time
+
+started = datetime.now()
+accessed = 0
+
+
+def application(environ, start_response):
+    global accessed
+    setup_testing_defaults(environ)
+
+    accessed = accessed + 1
+    delta = datetime.now() - started
+    elapsed = time.strftime('%H:%M:%S', time.gmtime(delta.total_seconds()))
+
+    status = '200 OK'
+    headers = [('Content-type', 'text/plain')]
+
+    start_response(status, headers)
+
+    content = []
+    content.append('App started on %s' % started)
+    content.append('App accessed %s times' % accessed)
+    content.append('App running for %s' % elapsed)
+    content.append('App idle timeout is 10 seconds'
+                   ' (just to show app reloading)')
+    return '\n'.join(content)

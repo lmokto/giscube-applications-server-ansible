@@ -1,0 +1,15 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: manelclos
+  description: Giscube Applications Server install role
+  company: "Giscube"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.4
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+    - system

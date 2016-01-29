@@ -1,0 +1,9 @@
+#! /bin/sh
+DIR=$(cd $(dirname "$0"); pwd)
+echo $DIR
+cd $DIR
+. ./venv/bin/activate
+. ./envvars
+
+echo $$ > uwsgi.pid;
+exec uwsgi uwsgi.ini
