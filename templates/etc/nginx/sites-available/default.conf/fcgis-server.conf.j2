@@ -3,8 +3,10 @@
 
     ### FCGIs
     location ~ ^/(?<group>{{ group_name }})/(?<appname>[^/]+)/(.*) {
+{% if group_islocal %}
             # Only available for local connections
             allow 127.0.0.1;
+{% endif %}
 
             include uwsgi_params;
             uwsgi_modifier1 9;

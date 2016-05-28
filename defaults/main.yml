@@ -2,7 +2,7 @@
 
 giscube_appsservers:
   - { name: apps, path: /data/apps }
-  - { name: fcgis, path: /data/fcgis, cgi: true }
+  - { name: fcgis, path: /data/fcgis, cgi: true, local: true }
 
 giscube_uwsgi_directory: /data/uwsgi
 
