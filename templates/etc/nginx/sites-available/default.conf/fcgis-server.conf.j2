@@ -1,15 +1,13 @@
 
     rewrite ^/{{ group_name }}/([^/]+)$ $scheme://$http_host/{{ group_name }}/$1/ redirect ;
 
-    ### {{ group_name }}
-    # Static files
-    location ~ ^/(?<group>{{ group_name }})/(?<appname>[^/]+)/static/(?<resource>.*)$ {
-            alias {{ group_path }}/$appname/static/$resource;
-    }
-
+    ### FCGIs
     location ~ ^/(?<group>{{ group_name }})/(?<appname>[^/]+)/(.*) {
+            # Only available for local connections
+            allow 127.0.0.1;
+
             include uwsgi_params;
-            uwsgi_modifier1 30;
+            uwsgi_modifier1 9;
             uwsgi_pass unix:{{ group_path }}/$appname/uwsgi.sock;
             uwsgi_param SCRIPT_NAME /$group/$appname;
     }

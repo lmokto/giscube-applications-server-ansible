@@ -1,9 +1,0 @@
-[uwsgi]
-procname-prefix-spaced=/fcgis/* emperor
-
-emperor = {{ giscube_apps_server_fcgis_directory }}/*/uwsgi_ondemand.ini
-master = true
-die-on-term = true
-vacuum = true
-
-emperor-on-demand-exec=%d/uwsgi_socket_name.sh

@@ -1,0 +1,26 @@
+---
+
+- name: create uwsgi directory
+  file: path={{ uwsgi_path }} state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: copy uwsgi config files
+  template:
+      backup=yes
+      src=data/uwsgi/{{ item.name }}.j2
+      dest={{ uwsgi_path }}/{{ item.name }}
+      owner=root
+      group=root
+      mode={{ item.mode }}
+  with_items:
+      - { name: 'envvars', mode: '0644' }
+      - { name: 'uwsgi_build.ini', mode: '0644' }
+
+- name: install uwsgi
+  pip:
+      virtualenv={{ uwsgi_path }}/venv/
+      name=uwsgi version=2.0.12
+  environment:
+      UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"

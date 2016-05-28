@@ -1,7 +1,7 @@
 [uwsgi]
-procname-prefix-spaced=/apps/* emperor
+procname-prefix-spaced=/{{ group_name }}/* emperor ondemand
 
-emperor = {{ giscube_apps_server_apps_directory }}/*/uwsgi_ondemand.ini
+emperor = {{ group_path }}/*/uwsgi_ondemand.ini
 master = true
 die-on-term = true
 vacuum = true

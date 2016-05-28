@@ -1,0 +1,103 @@
+---
+
+# vars:
+#     group_name: e.g. apps
+#     group_path: e.g. /data/apps
+#     uwsgi_instance: e.g. /data/uwsgi
+
+# e.g. /data/uwsgi/apps-emperor
+- name: create uwsgi emperor application server directory
+  file: path={{ uwsgi_instance }}/{{ group_name }}-emperor state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: copy uwsgi emperor application server to uwsgi directory
+  template:
+        backup=yes
+        src=data/uwsgi/apps-emperor/{{ item.name }}.j2
+        dest={{ uwsgi_instance }}/{{ group_name }}-emperor/{{ item.name }}
+        owner=root
+        group=root
+        mode={{ item.mode }}
+  with_items:
+      - { name: 'envvars', mode: '0644' }
+      - { name: 'uwsgi.ini', mode: '0644' }
+      - { name: 'uwsgi.sh', mode: '0755' }
+
+# e.g. /data/uwsgi/apps-ondemand
+- name: create uwsgi ondemand application server directory
+  file: path={{ uwsgi_instance }}/{{ group_name }}-ondemand state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: copy uwsgi ondemand application server to uwsgi directory
+  template:
+      backup=yes
+      src=data/uwsgi/apps-ondemand/{{ item.name }}.j2
+      dest={{ uwsgi_instance }}/{{ group_name }}-ondemand/{{ item.name }}
+      owner=root
+      group=root
+      mode={{ item.mode }}
+  with_items:
+      - { name: 'envvars', mode: '0644' }
+      - { name: 'uwsgi.ini', mode: '0644' }
+      - { name: 'uwsgi.sh', mode: '0755' }
+      - { name: 'uwsgi_socket_name.sh', mode: '0755' }
+
+# supervisor configuration
+- name: applications server supervisor configuration
+  template:
+      backup=yes
+      src=etc/supervisor/conf.d/{{ item }}.j2
+      dest=/etc/supervisor/conf.d/{{ group_name }}-{{ item }}
+      owner=root
+      group=root
+      mode=0644
+  with_items:
+    - apps-emperor.conf
+    - apps-ondemand.conf
+  notify:
+    - reread supervisor
+
+# nginx configuration
+- name: applications server nginx configuration
+  template:
+      backup=yes
+      src=etc/nginx/sites-available/default.conf/applications-server.conf.j2
+      dest=/etc/nginx/sites-available/default.conf/appsserver-{{ group_name }}.conf
+      owner=root
+      group=root
+      mode=0644
+  when: "not {{ group_iscgi }}"
+  notify:
+    - reload nginx
+
+- name: applications server CGI nginx configuration
+  template:
+      backup=yes
+      src=etc/nginx/sites-available/default.conf/fcgis-server.conf.j2
+      dest=/etc/nginx/sites-available/default.conf/appsserver-{{ group_name }}.conf
+      owner=root
+      group=root
+      mode=0644
+  when: "{{ group_iscgi }}"
+  notify:
+    - reload nginx
+
+# e.g. /data/apps/
+- name: create apps directory
+  file: path={{ group_path }} state=directory
+      owner=www-data
+      group=www-data
+      mode=0755
+
+- name: copy example applications to apps directory
+  copy:
+      src=data/apps/
+      dest={{ group_path }}
+      owner=www-data
+      group=www-data
+      mode=0644
+  when: giscube_apps_server_install_examples
