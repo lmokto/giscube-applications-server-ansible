@@ -7,3 +7,5 @@ giscube_appsservers:
 giscube_uwsgi_directory: /data/uwsgi
 
 giscube_appsserver_install_examples: yes
+
+giscube_appsserver_uwsgi_plugins: no
