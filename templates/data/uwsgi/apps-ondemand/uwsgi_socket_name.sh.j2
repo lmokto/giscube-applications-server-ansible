@@ -1,2 +1,2 @@
-socket=`echo $1 | sed 's/_ondemand.ini$/.sock/g'`
+socket=`echo $1 | sed 's/_ondemand{{ python_suffix }}.ini$/.sock/g'`
 echo $socket

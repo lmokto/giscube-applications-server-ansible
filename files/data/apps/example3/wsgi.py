@@ -22,10 +22,10 @@ def application(environ, start_response):
     start_response(status, headers)
 
     content = []
-    content.append('## App uwsgi_ondemand python %s' % sys.version_info.major)
+    content.append('## App uwsgi python %s' % sys.version_info.major)
     content.append('App started on %s' % started)
     content.append('App accessed %s times' % accessed)
     content.append('App running for %s' % elapsed)
-    content.append('App idle timeout is 10 seconds'
-                   ' (just to show app reloading)')
-    return '\n'.join(content)
+    content.append('')
+
+    return [str.encode('\n'.join(content))]

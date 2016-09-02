@@ -1,5 +1,5 @@
 # A relatively simple WSGI application.
-
+import sys
 from wsgiref.util import setup_testing_defaults
 from datetime import datetime
 import time
@@ -22,6 +22,7 @@ def application(environ, start_response):
     start_response(status, headers)
 
     content = []
+    content.append('## App uwsgi python %s' % sys.version_info.major)
     content.append('App started on %s' % started)
     content.append('App accessed %s times' % accessed)
     content.append('App running for %s' % elapsed)
