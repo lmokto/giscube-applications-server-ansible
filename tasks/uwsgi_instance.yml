@@ -18,9 +18,27 @@
       - { name: 'envvars', mode: '0644' }
       - { name: 'uwsgi_build.ini', mode: '0644' }
 
-- name: install uwsgi
+- name: install uwsgi for python2
   pip:
       virtualenv={{ uwsgi_path }}/venv/
       name=uwsgi version=2.0.12
   environment:
       UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
+
+- name: install uwsgi for python3 Ubuntu Trusty
+  pip:
+      virtualenv_command="pyvenv-3.4"
+      virtualenv={{ uwsgi_path }}/venv3/
+      name=uwsgi version=2.0.12
+  environment:
+      UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
+- name: install uwsgi for python3 Ubuntu Xenial
+  pip:
+      virtualenv_command="pyvenv-3.5"
+      virtualenv={{ uwsgi_path }}/venv3/
+      name=uwsgi version=2.0.12
+  environment:
+      UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'

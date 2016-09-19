@@ -1,0 +1,11 @@
+[program:{{ group_name }}-ondemand3]
+autostart=true
+autorestart=true
+startretries=99999999
+stopsignal=INT
+redirect_stderr=true
+stdout_logfile={{ uwsgi_instance }}/%(program_name)s/log.log
+stdout_logfile_maxbytes=5MB
+stdout_logfile_backups=1
+
+command = {{ uwsgi_instance }}/%(program_name)s/uwsgi.sh

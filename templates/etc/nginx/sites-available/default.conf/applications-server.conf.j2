@@ -9,7 +9,7 @@
 
     location ~ ^/(?<group>{{ group_name }})/(?<appname>[^/]+)/(.*) {
             include uwsgi_params;
-            uwsgi_modifier1 30;
+            # uwsgi_modifier1 30;
             uwsgi_pass unix:{{ group_path }}/$appname/uwsgi.sock;
-            uwsgi_param SCRIPT_NAME /$group/$appname;
+            # uwsgi_param SCRIPT_NAME /$group/$appname;
     }

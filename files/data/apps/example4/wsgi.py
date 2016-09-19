@@ -28,4 +28,4 @@ def application(environ, start_response):
     content.append('App running for %s' % elapsed)
     content.append('App idle timeout is 10 seconds'
                    ' (just to show app reloading)')
-    return '\n'.join(content)
+    return [str.encode('\n'.join(content))]

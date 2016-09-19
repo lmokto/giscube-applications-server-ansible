@@ -1,7 +1,7 @@
 [uwsgi]
-procname-prefix-spaced=/{{ group_name }}/* emperor ondemand
+procname-prefix-spaced=/{{ group_name }}/* emperor ondemand {{ python_suffix }}
 
-emperor = {{ group_path }}/*/uwsgi_ondemand.ini
+emperor = {{ group_path }}/*/uwsgi_ondemand{{ python_suffix }}.ini
 master = true
 die-on-term = true
 vacuum = true
