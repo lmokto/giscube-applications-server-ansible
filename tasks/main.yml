@@ -1,8 +1,10 @@
 ---
 
-- include: uwsgi_instance.yml uwsgi_path={{ giscube_uwsgi_directory }}
+- name: uWSGI instance
+  include: uwsgi_instance.yml uwsgi_path={{ giscube_uwsgi_directory }}
 
-- include: uwsgi-apps.yml
+- name: uWSGI apps
+  include: uwsgi-apps.yml
   vars:
       group_name: "{{ group.name }}"
       group_path: "{{ group.path }}"
