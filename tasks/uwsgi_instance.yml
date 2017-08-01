@@ -2,8 +2,8 @@
 
 - name: create uwsgi directory
   file: path={{ uwsgi_path }} state=directory
-      owner=www-data
-      group=www-data
+      owner=root
+      group=root
       mode=0755
 
 - name: copy uwsgi config files
@@ -22,7 +22,7 @@
   pip:
       virtualenv_python=python2.7
       virtualenv={{ uwsgi_path }}/venv/
-      name=uwsgi version=2.0.12
+      name=uwsgi version=2.0.15
   environment:
       UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
 
@@ -30,7 +30,7 @@
   pip:
       virtualenv_command="pyvenv-3.4"
       virtualenv={{ uwsgi_path }}/venv3/
-      name=uwsgi version=2.0.12
+      name=uwsgi version=2.0.15
   environment:
       UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
@@ -39,7 +39,16 @@
   pip:
       virtualenv_python=python3.5
       virtualenv={{ uwsgi_path }}/venv3/
-      name=uwsgi version=2.0.12
+      name=uwsgi version=2.0.15
   environment:
       UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+- name: install uwsgi for python3 Ubuntu Zesty
+  pip:
+      virtualenv_python=python3.6
+      virtualenv={{ uwsgi_path }}/venv3/
+      name=uwsgi version=2.0.15
+  environment:
+      UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'zesty'

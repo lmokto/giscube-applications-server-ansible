@@ -1,2 +1,8 @@
-socket=`echo $1 | sed 's/_ondemand{{ python_suffix }}.ini$/.sock/g'`
-echo $socket
+# $1 contains the path to the uwsgi_ondemand.ini file
+BASEDIR=`dirname $1`
+
+# run pre-configuration script
+sh $BASEDIR/uwsgi.pre.sh
+
+# return socket name, in subdirectory "run" owned by www-data
+echo "$BASEDIR/run/uwsgi.sock"

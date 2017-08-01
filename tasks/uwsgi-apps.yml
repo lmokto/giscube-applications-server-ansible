@@ -8,14 +8,14 @@
 # e.g. /data/uwsgi/apps-emperor
 - name: create uwsgi emperor application server directory
   file: path={{ uwsgi_instance }}/{{ group_name }}-emperor state=directory
-      owner=www-data
-      group=www-data
+      owner=root
+      group=root
       mode=0755
 
 - name: create uwsgi3 emperor application server directory
   file: path={{ uwsgi_instance }}/{{ group_name }}-emperor3 state=directory
-      owner=www-data
-      group=www-data
+      owner=root
+      group=root
       mode=0755
   when: "not group_iscgi"
 
@@ -53,15 +53,15 @@
 # e.g. /data/uwsgi/apps-ondemand
 - name: create uwsgi ondemand application server directory
   file: path={{ uwsgi_instance }}/{{ group_name }}-ondemand state=directory
-      owner=www-data
-      group=www-data
+      owner=root
+      group=root
       mode=0755
 
 # e.g. /data/uwsgi/apps-ondemand3
 - name: create uwsgi ondemand application server directory
   file: path={{ uwsgi_instance }}/{{ group_name }}-ondemand3 state=directory
-      owner=www-data
-      group=www-data
+      owner=root
+      group=root
       mode=0755
   when: "not group_iscgi"
 
@@ -158,15 +158,15 @@
 # e.g. /data/apps/
 - name: create apps directory
   file: path={{ group_path }} state=directory
-      owner=www-data
-      group=www-data
+      owner=root
+      group=root
       mode=0755
 
 - name: copy example applications to apps directory
   copy:
       src=data/apps/
       dest={{ group_path }}
-      owner=www-data
-      group=www-data
+      owner=root
+      group=root
       mode=0644
   when: "giscube_appsserver_install_examples and not group_iscgi"
