@@ -1,8 +1,14 @@
 ---
 
+giscube_apps_name: apps
+giscube_apps_path: /data/apps
+
+giscube_fcgis_name: fcgis
+giscube_fcgis_path: /data/fcgis
+
 giscube_appsservers:
-  - { name: apps, path: /data/apps }
-  - { name: fcgis, path: /data/fcgis, cgi: true, local: true }
+  - { name: {{ giscube_apps_name }}, path: {{ giscube_apps_path }} }
+  - { name: {{ giscube_fcgis_name }}, path: {{ giscube_fcgis_path }}, cgi: true, local: true }
 
 giscube_uwsgi_directory: /data/uwsgi
 
