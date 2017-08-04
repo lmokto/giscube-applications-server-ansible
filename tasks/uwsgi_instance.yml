@@ -28,7 +28,7 @@
 
 - name: install uwsgi for python3 Ubuntu Trusty
   pip:
-      virtualenv_command="pyvenv-3.4"
+      virtualenv_python=python3.4
       virtualenv={{ uwsgi_path }}/venv3/
       name=uwsgi version=2.0.15
   environment:
