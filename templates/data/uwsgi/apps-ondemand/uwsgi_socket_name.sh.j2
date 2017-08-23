@@ -1,8 +1,12 @@
 # $1 contains the path to the uwsgi_ondemand.ini file
 BASEDIR=`dirname $1`
 
-# run pre-configuration script
-sh $BASEDIR/uwsgi.pre.sh
-
-# return socket name, in subdirectory "run" owned by www-data
-echo "$BASEDIR/run/uwsgi.sock"
+if [ -f $BASEDIR/uwsgi.pre.sh ]; then
+  # run pre-configuration script
+  sh $BASEDIR/uwsgi.pre.sh
+  # return socket name, in subdirectory "run" owned by www-data
+  echo "$BASEDIR/run/uwsgi.sock"
+else
+  # "run" removed, compatibility with old system
+  echo "$BASEDIR/uwsgi.sock"
+fi
