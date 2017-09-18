@@ -134,7 +134,7 @@
 - name: applications server nginx configuration
   template:
       backup=yes
-      src=etc/nginx/sites-available/default.conf/applications-server.conf.j2
+      src=etc/nginx/sites-available/default.conf/{{ app_server_nginx_template | default('applications-server.conf') }}.j2
       dest=/etc/nginx/sites-available/default.conf/appsserver-{{ group_name }}.conf
       owner=root
       group=root
