@@ -8,7 +8,7 @@
   vars:
       group_name: "{{ group.name }}"
       group_path: "{{ group.path }}"
-      group_iscgi: "{{ group.cgi|default(false) }}"
+      group_iscgi: "group.cgi|default(false)"
       group_islocal: "{{ group.local|default(false) }}"
       uwsgi_instance: "{{ giscube_uwsgi_directory }}"
   with_items: "{{ giscube_appsservers }}"
