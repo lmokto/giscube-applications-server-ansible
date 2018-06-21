@@ -52,3 +52,12 @@
   environment:
       UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'zesty'
+
+- name: install uwsgi for python3 Ubuntu Bionic
+  pip:
+      virtualenv_python=python3.6
+      virtualenv={{ uwsgi_path }}/venv3/
+      name=uwsgi version=2.0.17
+  environment:
+      UWSGI_PROFILE: "{{ uwsgi_path }}/uwsgi_build.ini"
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
